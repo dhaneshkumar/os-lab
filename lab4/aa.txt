@@ -1,0 +1,6 @@
+ls dsds
+ls ..
+ls ~
+pwd
+cd ..
+pwd
