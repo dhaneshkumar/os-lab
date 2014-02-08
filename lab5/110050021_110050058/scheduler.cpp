@@ -20,12 +20,14 @@ void Scheduler::addProcess(process p)
 		{
 			saveStatus(eventTable.top());
 			eventTable.push(p);
+			schedule();
 		}
 
 	}
 	else
 	{
 		eventTable.push(p);
+		schedule();
 	}
 }
 
@@ -40,7 +42,7 @@ void Scheduler::schedule()
 	process cp= eventTable.top();
 	
 
-	cout<<"pid : "<< cp.p_id<<"  pstate : "<<cp.state<<" ptime: "<<cp.admission<<endl;
+	cout<<"pid : "<< cp.p_id<<"  pstate : "<<cp.state<<" pphase time : "<<cp.phases.front().cpu_time<<endl;
 	//cout<<cpuTime<<endl;
 	//cout<<clocktime<<" --"<<endl;
 	cpuTime= clocktime;
@@ -60,6 +62,8 @@ void Scheduler::saveStatus(process p)
 {
 	int burstTime = clocktime-cpuTime;
 
+	cout<<"cpu time : "<<cpuTime<<"   "<<clocktime<<endl;
+
 	if(p.phases.front().cpu_time -burstTime ==0)
 	{
 		process cp= eventTable.top();
@@ -71,10 +75,22 @@ void Scheduler::saveStatus(process p)
 		e.newProcess = cp;
 
 		em.addEvent(e);
+
 	}
 	else if(p.phases.front().cpu_time -burstTime >0)
 	{
-		p.phases.front().cpu_time = p.phases.front().cpu_time -burstTime;
+		cout<<"phase time : "<<p.phases[0].cpu_time<<endl;
+		p.phases.front().cpu_time = p.phases[0].cpu_time -burstTime;
+
+		
+
+		Event  e;
+		//e.startTime = clocktime ;
+		e.type = 1;
+		e.newProcess = p;
+		em.removeEvent(e);
+		cout<<"remaining phase time : "<<p.phases.front().cpu_time<<endl;
+		cout<<"process removed"<<endl;
 	}
 	else
 		cout<<"Error : burst time > phase cput time"<<endl;

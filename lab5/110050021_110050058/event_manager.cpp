@@ -74,19 +74,20 @@ void EventManager::ioStart(process p){
 
 	addEvent(e);
 
+	sd->schedule();
 	//cout<<"iostarted  finished"<<endl;
 }
 
 
 void EventManager::ioComplete(process p){
 
-	cout<<"\nioComplete :--  start time"<<clocktime<<"  id "<<p.p_id<<"  "<<p.phases.front().iterations <<endl;
+	cout<<"\nioComplete |size "<<p.phases.size()<<"  id "<<p.p_id<<"  "<<p.phases.front().iterations <<endl;
 	
 	
 	if(p.phases.front().iterations==1)
 	{
 		p.phases.erase(p.phases.begin());
-		cout<<"process id "<<p.p_id<<"finished"<<endl;
+		cout<<"process id  : "<<p.p_id<<"   finished"<<endl;
 	}
 	else
 	{
@@ -127,7 +128,7 @@ void EventManager::run()
 
 		while(clocktime == e.startTime)
 		{
-			cout<<"\nevent :"<<dmd++<<" type : "<<e.type<<"  time : "<<clocktime<<endl;
+			cout<<"\nevent :"<<dmd++<<" |type : "<<e.type<<" |time : "<<clocktime<<" |pid :"<<e.newProcess.p_id<<endl;
 			if(e.type==1)
 			{
 				//cout<<" event type 1"<<endl;
@@ -158,7 +159,7 @@ void EventManager::run()
 		}
 
 		//cout<<"start scheduling "<<endl;
-		sd->schedule();
+		//sd->schedule();
 
 	}
 }
