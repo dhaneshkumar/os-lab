@@ -18,7 +18,10 @@ void Scheduler::addProcess(process p)
 		}
 		else
 		{
-			saveStatus(eventTable.top());
+			process pc =eventTable.top();
+			eventTable.pop();
+			saveStatus(pc);
+			eventTable.push(pc);
 			eventTable.push(p);
 			schedule();
 		}
@@ -58,7 +61,7 @@ void Scheduler::schedule()
 }
 
 
-void Scheduler::saveStatus(process p)
+void Scheduler::saveStatus(process &p)
 {
 	int burstTime = clocktime-cpuTime;
 

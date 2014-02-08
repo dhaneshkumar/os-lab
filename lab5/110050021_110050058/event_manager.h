@@ -57,7 +57,7 @@ public:
 		cpuTime=1;
 	};
 	void addProcess(process p);
-	void saveStatus(process p);
+	void saveStatus(process &p);
 	void schedule();
 
 
