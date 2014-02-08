@@ -23,7 +23,7 @@ EventManager::EventManager()
 
 void EventManager::addEvent(Event  e)
 {
-	cout<<"Event added: "<<e.newProcess.p_id<<" | time"<<e.startTime<<"  | type : "<<e.type<<endl;
+	cout<<"new event added with process id : "<<e.newProcess.p_id<<"  | type : "<<e.type<<endl;
 	Event  e1;
 	e1.startTime = e.startTime;
 	e1.type = e.type;
@@ -43,7 +43,7 @@ void EventManager::removeEvent(Event  e)
 	// 	}
 	// }
 	sort (eventList.begin(), eventList.end());
-	cout<<"event removed"<<endl;
+	//cout<<"event removed"<<endl;
 }
 
 
@@ -81,17 +81,17 @@ void EventManager::ioStart(process p){
 
 void EventManager::ioComplete(process p){
 
-	cout<<"\nioComplete |size "<<p.phases.size()<<"  id "<<p.p_id<<"  "<<p.phases.front().iterations <<endl;
+	//cout<<"\nioComplete |size "<<p.phases.size()<<"  id "<<p.p_id<<"  "<<p.phases.front().iterations <<endl;
 	
 	
 	if(p.phases.front().iterations==1)
 	{
 		p.phases.erase(p.phases.begin());
-		cout<<"process id  : "<<p.p_id<<"   finished"<<endl;
+		cout<<"process id  : "<<p.p_id<<" | "<<clocktime<<endl;
 	}
 	else
 	{
-		cout<<"process id "<<p.p_id<<"completed phase"<<p.phases.front().iterations<<endl;
+		cout<<"process id "<<p.p_id<<"next phase finished"<<p.phases.front().iterations<<endl;
 		p.phases.front().iterations--;
 
 	}

@@ -65,7 +65,7 @@ void Scheduler::saveStatus(process &p)
 {
 	int burstTime = clocktime-cpuTime;
 
-	cout<<"cpu time : "<<cpuTime<<"   "<<clocktime<<endl;
+	//cout<<"cpu time : "<<cpuTime<<"   "<<clocktime<<endl;
 
 	if(p.phases.front().cpu_time -burstTime ==0)
 	{
@@ -82,7 +82,7 @@ void Scheduler::saveStatus(process &p)
 	}
 	else if(p.phases.front().cpu_time -burstTime >0)
 	{
-		cout<<"phase time : "<<p.phases[0].cpu_time<<endl;
+		//cout<<"phase time : "<<p.phases[0].cpu_time<<endl;
 		p.phases.front().cpu_time = p.phases[0].cpu_time -burstTime;
 
 		
@@ -92,8 +92,8 @@ void Scheduler::saveStatus(process &p)
 		e.type = 1;
 		e.newProcess = p;
 		em.removeEvent(e);
-		cout<<"remaining phase time : "<<p.phases.front().cpu_time<<endl;
-		cout<<"process removed"<<endl;
+		//cout<<"remaining phase time : "<<p.phases.front().cpu_time<<endl;
+		//cout<<"process removed"<<endl;
 	}
 	else
 		cout<<"Error : burst time > phase cput time"<<endl;
