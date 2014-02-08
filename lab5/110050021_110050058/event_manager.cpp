@@ -23,6 +23,7 @@ EventManager::EventManager()
 
 void EventManager::addEvent(Event  e)
 {
+	cout<<"Event added: "<<e.newProcess.p_id<<" | time"<<e.startTime<<"  | type : "<<e.type<<endl;
 	Event  e1;
 	e1.startTime = e.startTime;
 	e1.type = e.type;
@@ -53,18 +54,18 @@ void EventManager::admit(process p)
 		p.state="ready";
 		sd->addProcess(p);
 
-		cout<<"process added"<<endl;
+		//cout<<"process added"<<endl;
 		//sd.schedule();
 }
 
 
 void EventManager::ioStart(process p){
 
-	cout<<"iostarted"<<endl;
+	//cout<<"\iostarted"<<endl;
 	p.state="blocked";
 	eventTable.pop();
 
-	cout<<"process id : "<<p.p_id<<" start io operation  --- time : "<<clocktime<<endl;
+	cout<<"\nprocess id : "<<p.p_id<<" io--- time : "<<clocktime<<endl;
 
 	Event  e;
 	e.startTime = clocktime + p.phases.front().io_time ;
@@ -73,13 +74,15 @@ void EventManager::ioStart(process p){
 
 	addEvent(e);
 
-	//sd.schedule();
+	//cout<<"iostarted  finished"<<endl;
 }
 
 
 void EventManager::ioComplete(process p){
 
-	cout<<"ioComplete :--  start time"<<clocktime<<endl;
+	cout<<"\nioComplete :--  start time"<<clocktime<<"  id "<<p.p_id<<"  "<<p.phases.front().iterations <<endl;
+	
+	
 	if(p.phases.front().iterations==1)
 	{
 		p.phases.erase(p.phases.begin());
@@ -90,14 +93,19 @@ void EventManager::ioComplete(process p){
 		cout<<"process id "<<p.p_id<<"completed phase"<<p.phases.front().iterations<<endl;
 		p.phases.front().iterations--;
 
-	
+	}
 
+	if(!p.phases.empty())
+	{
 	Event  e;
-	e.startTime = clocktime + p.phases.front().io_time ;
+	e.startTime = clocktime;
 	e.type = 1;
 	e.newProcess = p;
 
 	addEvent(e);
+	}else
+	{
+		cout<<"process completed ***************************************\\m/"<<endl<<endl;
 	}
 	//sd.schedule();
 }
@@ -106,38 +114,50 @@ void EventManager::run()
 {
 	cout<<"program start :" <<endl;
 
-	int dmd=0;
+	int dmd=1;
 	while(!eventList.empty())
 	{
 
 		
 		Event e = eventList.front();
+
+		//cout<<"list size : "<<eventList.size()<< " -clocktime- "<<clocktime<<endl;
+
 		clocktime =e.startTime;
 
 		while(clocktime == e.startTime)
 		{
-			cout<<"event:"<<dmd++<<" type : "<<e.type<<"   time : "<<clocktime<<endl;
+			cout<<"\nevent :"<<dmd++<<" type : "<<e.type<<"  time : "<<clocktime<<endl;
 			if(e.type==1)
 			{
-				cout<<" event type 1"<<endl;
+				//cout<<" event type 1"<<endl;
 				admit(e.newProcess);
 			}
 			else if(e.type==2)
 			{
-				cout<<" event type 2"<<endl;
+				//cout<<" event type 2"<<endl;
 				ioStart(e.newProcess);
 			}
 			else if(e.type==3)
 			{
-				cout<<" event type 3"<<endl;
+				//cout<<" event type 3"<<endl;
 				ioComplete(e.newProcess);
 			}
+			else
+				cout<<"type error : "<<e.type<<endl;
 
+			//cout<<"list size1 : "<<eventList.size()<<endl;
+			
 			eventList.erase(eventList.begin());
+			//cout<<"list size1 : "<<eventList.size()<<endl;
+			if(eventList.size()==0)
+			{
+				break;
+			}
 			e = eventList.front();
 		}
 
-		cout<<"start scheduling "<<endl;
+		//cout<<"start scheduling "<<endl;
 		sd->schedule();
 
 	}

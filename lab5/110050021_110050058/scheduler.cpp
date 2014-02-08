@@ -5,6 +5,8 @@ using namespace std;
 
 void Scheduler::addProcess(process p)
 {
+	//cout<<"phase size : "<<p.phases.size()<<endl;
+
 	if(!eventTable.empty())
 	{
 		process pt=eventTable.top();
@@ -31,14 +33,14 @@ void Scheduler::addProcess(process p)
 
 void Scheduler::schedule()
 {
-	cout<<"scheduled program : "<<endl<<endl;
+	if(!eventTable.empty())
+	{
+	//cout<<"scheduled program -size: "<<eventTable.size()<<endl<<endl;
+
 	process cp= eventTable.top();
 	
 
-	cout<<"process id : "<< cp.p_id<<endl;
-	cout<<"process state : "<<cp.state<<endl;
-	cout<<"process time: "<<cp.admission<<endl;
-
+	cout<<"pid : "<< cp.p_id<<"  pstate : "<<cp.state<<" ptime: "<<cp.admission<<endl;
 	//cout<<cpuTime<<endl;
 	//cout<<clocktime<<" --"<<endl;
 	cpuTime= clocktime;
@@ -49,6 +51,7 @@ void Scheduler::schedule()
 	e.newProcess = cp;
 
 	em.addEvent(e);
+	}
 
 }
 
